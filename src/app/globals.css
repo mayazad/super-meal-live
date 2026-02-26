@@ -18,7 +18,7 @@
   --radius-sm: calc(var(--radius) - 4px);
 }
 
-/* ── Default (before JS hydrates) ───────────────────────────────── */
+/* ── Default / SSR fallback ──────────────────────────────────────── */
 :root {
   --background: #000000;
   --foreground: #ffffff;
@@ -33,11 +33,16 @@
   --card-foreground: #ffffff;
   --accent: #ffffff;
   --radius: 0.5rem;
-  /* tooltip */
   --tooltip-bg: #09090b;
   --tooltip-border: #27272a;
   --tooltip-text: #f4f4f5;
-  /* branding glow */
+  --sidebar-bg: #000000;
+  --sidebar-text: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-active-bg: #ffffff;
+  --sidebar-active-text: #000000;
+  --sidebar-muted: rgba(255, 255, 255, 0.5);
+  --brand-color: inherit;
   --brand-glow: none;
 }
 
@@ -58,63 +63,89 @@
   --tooltip-bg: #09090b;
   --tooltip-border: #27272a;
   --tooltip-text: #f4f4f5;
+  --sidebar-bg: #000000;
+  --sidebar-text: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-active-bg: #ffffff;
+  --sidebar-active-text: #000000;
+  --sidebar-muted: rgba(255, 255, 255, 0.5);
+  --brand-color: inherit;
   --brand-glow: none;
 }
 
-/* ── Emerald Forest ──────────────────────────────────────────────── */
+/* ── Off-White Emerald (Light) ───────────────────────────────────── */
 [data-theme="emerald"] {
-  --background: #050805;
-  --foreground: #ecfdf5;
+  --background: #F7F9F7;
+  --foreground: #1A2F1A;
   --primary: #10b981;
-  --primary-foreground: #000000;
-  --muted: #0b1c11;
-  --muted-foreground: #6ee7b7;
-  --border: #14532d;
-  --input: #14532d;
+  --primary-foreground: #ffffff;
+  --muted: #EDF2ED;
+  --muted-foreground: #556B55;
+  --border: #D1E4D1;
+  --input: #D1E4D1;
   --ring: #10b981;
-  --card: #070f09;
-  --card-foreground: #ecfdf5;
+  --card: #ffffff;
+  --card-foreground: #1A2F1A;
   --accent: #10b981;
-  --tooltip-bg: #052e16;
-  --tooltip-border: #166534;
-  --tooltip-text: #d1fae5;
-  --brand-glow: 0 0 12px 2px rgba(16, 185, 129, 0.45);
+  --tooltip-bg: #064E3B;
+  --tooltip-border: #065f46;
+  --tooltip-text: #ecfdf5;
+  --sidebar-bg: #EDF2ED;
+  --sidebar-text: #1A2F1A;
+  --sidebar-border: rgba(26, 47, 26, 0.1);
+  --sidebar-active-bg: #10b981;
+  --sidebar-active-text: #ffffff;
+  --sidebar-muted: #556B55;
+  --brand-color: #10b981;
+  --brand-glow: none;
 }
 
-/* ── Emerald gradient overlay on body ───────────────────────────── */
+/* ── Emerald: soft radial on background ─────────────────────────── */
 [data-theme="emerald"] body {
-  background-image: radial-gradient(circle at top, rgba(6, 78, 59, 0.12) 0%, transparent 60%);
+  background-image: radial-gradient(ellipse at top, rgba(167, 243, 208, 0.25) 0%, transparent 55%);
 }
 
-/* ── Emerald: accent borders / buttons ──────────────────────────── */
-[data-theme="emerald"] .border {
-  border-color: var(--border);
+/* ── Cross-fade transition when switching themes ─────────────────── */
+html {
+  transition: background-color 0.5s ease;
 }
 
-/* ── MayazAD branding glow (footer) ─────────────────────────────── */
+body {
+  transition: background-color 0.5s ease, color 0.4s ease;
+}
+
+.bg-card,
+.bg-muted,
+.border,
+.bg-background {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+/* ── MayazAD branding ────────────────────────────────────────────── */
 .brand-glow {
-  text-shadow: var(--brand-glow);
-  transition: text-shadow 0.5s ease;
+  color: var(--brand-color);
+  transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
-/* ── Emerald pulse keyframe for MayazAD tag ─────────────────────── */
+/* Emerald: soft pulse glow on brand text */
 @keyframes emerald-pulse {
 
   0%,
   100% {
-    text-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+    text-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
   }
 
   50% {
-    text-shadow: 0 0 18px rgba(16, 185, 129, 0.8), 0 0 30px rgba(16, 185, 129, 0.3);
+    text-shadow: 0 0 14px rgba(16, 185, 129, 0.7), 0 0 24px rgba(16, 185, 129, 0.25);
   }
 }
 
 [data-theme="emerald"] .brand-glow {
-  animation: emerald-pulse 2.4s ease-in-out infinite;
   color: #10b981;
+  animation: emerald-pulse 2.8s ease-in-out infinite;
 }
 
+/* ── Base ────────────────────────────────────────────────────────── */
 * {
   border-color: var(--border);
 }

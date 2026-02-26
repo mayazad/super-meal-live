@@ -97,18 +97,20 @@ export default function MobileNav({ userEmail }: Props) {
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
                         transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-                        className="fixed top-0 left-0 bottom-0 z-[100] w-72 bg-black text-white flex flex-col shadow-2xl lg:hidden overscroll-contain"
-                        style={{ overscrollBehavior: 'contain' }}
+                        className="fixed top-0 left-0 bottom-0 z-[100] w-72 flex flex-col shadow-2xl lg:hidden"
+                        style={{ background: 'var(--sidebar-bg)', color: 'var(--sidebar-text)', overscrollBehavior: 'contain' }}
                     >
                         {/* Drawer Header */}
-                        <div className="flex items-center justify-between px-5 h-14 border-b border-white/10 shrink-0">
+                        <div className="flex items-center justify-between px-5 h-14 shrink-0" style={{ borderBottom: '1px solid var(--sidebar-border)' }}>
                             <div className="flex items-center gap-2 font-bold text-lg">
-                                <div className="h-7 w-7 rounded bg-white text-black flex items-center justify-center text-xs font-black">M</div>
+                                <div className="h-7 w-7 rounded flex items-center justify-center text-xs font-black"
+                                    style={{ background: 'var(--sidebar-active-bg)', color: 'var(--sidebar-active-text)' }}>M</div>
                                 SuperMeal
                             </div>
                             <button
                                 onClick={close}
-                                className="flex items-center justify-center h-10 w-10 rounded-md hover:bg-white/10 transition-colors"
+                                className="flex items-center justify-center h-10 w-10 rounded-md transition-colors"
+                                style={{ color: 'var(--sidebar-muted)' }}
                                 aria-label="Close menu"
                             >
                                 <X className="h-5 w-5" />
@@ -125,10 +127,11 @@ export default function MobileNav({ userEmail }: Props) {
                                         key={item.href}
                                         href={item.href}
                                         onClick={close}
-                                        className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors min-h-[48px] ${isActive
-                                            ? 'bg-white text-black'
-                                            : 'text-white/70 hover:bg-white/10 hover:text-white'
-                                            }`}
+                                        className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors min-h-[48px]"
+                                        style={isActive
+                                            ? { background: 'var(--sidebar-active-bg)', color: 'var(--sidebar-active-text)' }
+                                            : { color: 'var(--sidebar-muted)' }
+                                        }
                                     >
                                         <Icon className="h-5 w-5 shrink-0" />
                                         {item.name}
@@ -138,15 +141,16 @@ export default function MobileNav({ userEmail }: Props) {
                         </nav>
 
                         {/* Drawer Footer */}
-                        <div className="shrink-0 border-t border-white/10 p-4 space-y-3">
-                            <p className="text-xs text-white/40 truncate px-1">{userEmail}</p>
-                            <p className="text-[10px] text-white/20 px-1 tracking-wide">
+                        <div className="shrink-0 p-4 space-y-3" style={{ borderTop: '1px solid var(--sidebar-border)' }}>
+                            <p className="text-xs truncate px-1" style={{ color: 'var(--sidebar-muted)' }}>{userEmail}</p>
+                            <p className="text-[10px] px-1 tracking-wide brand-glow" style={{ opacity: 0.5 }}>
                                 Crafted by <span className="font-mono font-semibold">MayazAD</span>
                             </p>
                             <form action="/admin/logout" method="POST">
                                 <button
                                     type="submit"
-                                    className="w-full flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-white/70 hover:bg-white/10 hover:text-white transition-colors min-h-[48px]"
+                                    className="w-full flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors min-h-[48px]"
+                                    style={{ color: 'var(--sidebar-muted)' }}
                                 >
                                     <LogOut className="h-5 w-5 shrink-0" />
                                     Sign Out

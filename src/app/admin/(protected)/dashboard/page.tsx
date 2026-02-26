@@ -426,10 +426,10 @@ export default function AdminDashboardPage() {
                             }`}
                     >
                         {/* Preview swatch */}
-                        <div className="rounded-lg overflow-hidden mb-3 h-16 flex flex-col gap-1 p-2" style={{ background: '#050805' }}>
+                        <div className="rounded-lg overflow-hidden mb-3 h-16 flex flex-col gap-1 p-2" style={{ background: '#F7F9F7', border: '1px solid #D1E4D1' }}>
                             <div className="h-2 w-3/4 rounded" style={{ background: '#10b981' }} />
-                            <div className="h-1.5 w-1/2 rounded" style={{ background: 'rgba(16,185,129,0.35)' }} />
-                            <div className="mt-auto h-2 w-full rounded" style={{ background: 'rgba(16,185,129,0.12)' }} />
+                            <div className="h-1.5 w-1/2 rounded" style={{ background: 'rgba(16,185,129,0.4)' }} />
+                            <div className="mt-auto h-2 w-full rounded" style={{ background: '#EDF2ED' }} />
                         </div>
                         <p className="text-sm font-semibold" style={activeTheme === 'emerald' ? { color: '#10b981' } : {}}>Emerald Forest</p>
                         <p className="text-xs text-muted-foreground mt-0.5">Deep green with emerald accents</p>
