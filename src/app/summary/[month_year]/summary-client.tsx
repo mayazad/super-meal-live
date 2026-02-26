@@ -379,7 +379,8 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                                     initial={{ opacity: 0, scale: 0.96, y: 8 }}
                                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                                     exit={{ opacity: 0, scale: 0.96 }}
-                                                    className="sm:hidden fixed left-4 right-4 bottom-6 z-[100] rounded-2xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-5"
+                                                    className="sm:hidden fixed left-4 right-4 bottom-6 z-[100] rounded-2xl border text-zinc-100 shadow-2xl p-5"
+                                                    style={{ background: 'var(--tooltip-bg)', borderColor: 'var(--tooltip-border)', color: 'var(--tooltip-text)' }}
                                                 >
                                                     <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">How It&apos;s Calculated</p>
                                                     <p className="text-sm font-semibold leading-relaxed">Total Grocery Cost ÷ Total Meals Consumed</p>
@@ -407,11 +408,12 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0 }}
                                                     transition={{ duration: 0.15 }}
-                                                    className="hidden sm:block absolute top-7 right-0 z-[100] rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-4"
-                                                    style={{ minWidth: '280px', maxWidth: '340px' }}
+                                                    className="hidden sm:block absolute top-7 right-0 z-[100] rounded-xl border text-zinc-100 shadow-2xl p-4"
+                                                    style={{ background: 'var(--tooltip-bg)', borderColor: 'var(--tooltip-border)', color: 'var(--tooltip-text)', minWidth: '280px', maxWidth: '340px' }}
                                                 >
                                                     {/* Caret arrow — top-right aligned to the (i) button */}
-                                                    <div className="absolute -top-[7px] right-2 w-3 h-3 bg-zinc-950 border-l border-t border-zinc-800 rotate-45" />
+                                                    <div className="absolute -top-[7px] right-2 w-3 h-3 border-l border-t rotate-45"
+                                                        style={{ background: 'var(--tooltip-bg)', borderColor: 'var(--tooltip-border)' }} />
 
                                                     <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">How It&apos;s Calculated</p>
                                                     <p className="text-sm font-semibold leading-relaxed">Total Grocery Cost ÷ Total Meals Consumed</p>
@@ -627,12 +629,12 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                     {/* Signature Strip */}
                     <div className="mt-6 pt-4 border-t flex items-center justify-between gap-2">
                         <span className="text-[10px] text-muted-foreground/70 tracking-wide font-medium">Official Summary&nbsp;|&nbsp;SuperMeal App</span>
-                        <span className="text-[10px] font-mono font-semibold text-muted-foreground/70 tracking-wide">Developer:&nbsp;MayazAD</span>
+                        <span className="text-[10px] font-mono font-semibold text-muted-foreground/70 tracking-wide brand-glow">Developer:&nbsp;MayazAD</span>
                     </div>
                 </motion.div>
 
                 <p className="text-center text-[11px] text-muted-foreground/40 tracking-wide pb-6">
-                    © 2026 SuperMeal&nbsp;&nbsp;|&nbsp;&nbsp;Crafted by <span className="font-mono font-semibold">MayazAD</span>
+                    © 2026 SuperMeal&nbsp;&nbsp;|&nbsp;&nbsp;Crafted by <span className="font-mono font-semibold brand-glow">MayazAD</span>
                 </p>
             </div>
         </div>

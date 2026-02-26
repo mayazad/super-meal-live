@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Lock, Unlock, ExternalLink, TrendingUp, Copy, Check, AlertTriangle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Lock, Unlock, ExternalLink, TrendingUp, Copy, Check, AlertTriangle, Palette } from 'lucide-react'
 
 type MonthStats = {
     month_year: string
@@ -48,6 +48,8 @@ export default function AdminDashboardPage() {
     const [userEmail, setUserEmail] = useState('')
     const [copiedDueList, setCopiedDueList] = useState(false)
     const [debtors, setDebtors] = useState<DebtorInfo[]>([])
+    const [activeTheme, setActiveThemeState] = useState<'classic' | 'emerald'>('classic')
+    const [isSavingTheme, setIsSavingTheme] = useState(false)
 
     const months12 = getLast12Months()
 
@@ -138,6 +140,11 @@ export default function AdminDashboardPage() {
         setStats(selectedStats)
         const allStats = [selectedStats, ...rest as MonthStats[]]
         setYearlyData([...allStats].reverse())
+
+        // Fetch current theme
+        const { data: settingsData } = await supabase.from('app_settings').select('selected_theme').eq('id', 'global_config').single()
+        if (settingsData?.selected_theme) setActiveThemeState(settingsData.selected_theme as 'classic' | 'emerald')
+
         setIsLoading(false)
         fetchDebtors(selectedMonth)
     }, [selectedMonth]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -159,6 +166,15 @@ export default function AdminDashboardPage() {
         const updated = await fetchStats(selectedMonth)
         setStats(updated)
         setIsLocking(false)
+    }
+
+    const handleSetTheme = async (theme: 'classic' | 'emerald') => {
+        setIsSavingTheme(true)
+        setActiveThemeState(theme)
+        // Optimistic: apply locally right away
+        document.documentElement.setAttribute('data-theme', theme)
+        await supabase.from('app_settings').update({ selected_theme: theme, updated_at: new Date().toISOString() }).eq('id', 'global_config')
+        setIsSavingTheme(false)
     }
 
     const handleCopyDueList = () => {
@@ -371,6 +387,60 @@ export default function AdminDashboardPage() {
                     <div className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm bg-muted-foreground/20" /> Meal Rate</div>
                     <div className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-sm bg-foreground" /> Selected</div>
                 </div>
+            </div>
+            {/* ── Site Appearance ──────────────────────────────────────────── */}
+            <div className="rounded-xl border bg-card shadow-sm p-6 space-y-4">
+                <div className="flex items-center gap-2">
+                    <Palette className="h-5 w-5 text-muted-foreground" />
+                    <h3 className="font-semibold text-lg">Site Appearance</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">Choose a visual theme for all users. Changes apply instantly to all screens.</p>
+                <div className="grid grid-cols-2 gap-4">
+                    {/* Classic Black */}
+                    <button
+                        onClick={() => handleSetTheme('classic')}
+                        disabled={isSavingTheme}
+                        className={`relative rounded-xl border-2 p-4 text-left transition-all ${activeTheme === 'classic' ? 'border-foreground' : 'border-border hover:border-foreground/40'
+                            }`}
+                    >
+                        {/* Preview swatch */}
+                        <div className="rounded-lg overflow-hidden mb-3 h-16 bg-black flex flex-col gap-1 p-2">
+                            <div className="h-2 w-3/4 rounded bg-white/90" />
+                            <div className="h-1.5 w-1/2 rounded bg-white/40" />
+                            <div className="mt-auto h-2 w-full rounded bg-white/10" />
+                        </div>
+                        <p className="text-sm font-semibold">Classic Black</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">High-contrast black &amp; white</p>
+                        {activeTheme === 'classic' && (
+                            <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background">
+                                <Check className="h-3 w-3" />
+                            </span>
+                        )}
+                    </button>
+
+                    {/* Emerald Forest */}
+                    <button
+                        onClick={() => handleSetTheme('emerald')}
+                        disabled={isSavingTheme}
+                        className={`relative rounded-xl border-2 p-4 text-left transition-all ${activeTheme === 'emerald' ? 'border-emerald-500' : 'border-border hover:border-emerald-500/40'
+                            }`}
+                    >
+                        {/* Preview swatch */}
+                        <div className="rounded-lg overflow-hidden mb-3 h-16 flex flex-col gap-1 p-2" style={{ background: '#050805' }}>
+                            <div className="h-2 w-3/4 rounded" style={{ background: '#10b981' }} />
+                            <div className="h-1.5 w-1/2 rounded" style={{ background: 'rgba(16,185,129,0.35)' }} />
+                            <div className="mt-auto h-2 w-full rounded" style={{ background: 'rgba(16,185,129,0.12)' }} />
+                        </div>
+                        <p className="text-sm font-semibold" style={activeTheme === 'emerald' ? { color: '#10b981' } : {}}>Emerald Forest</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">Deep green with emerald accents</p>
+                        {activeTheme === 'emerald' && (
+                            <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full" style={{ background: '#10b981' }}>
+                                <Check className="h-3 w-3 text-black" />
+                            </span>
+                        )}
+                    </button>
+                </div>
+                {isSavingTheme && <p className="text-xs text-muted-foreground">Applying theme to all screens…</p>}
             </div>
 
         </div>
