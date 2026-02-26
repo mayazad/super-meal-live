@@ -407,11 +407,11 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0 }}
                                                     transition={{ duration: 0.15 }}
-                                                    className="hidden sm:block absolute top-7 left-1/2 -translate-x-1/2 z-[100] rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-4"
-                                                    style={{ minWidth: '280px', maxWidth: '350px' }}
+                                                    className="hidden sm:block absolute top-7 right-0 z-[100] rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-4"
+                                                    style={{ minWidth: '280px', maxWidth: '340px' }}
                                                 >
-                                                    {/* Caret arrow pointing up */}
-                                                    <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 bg-zinc-950 border-l border-t border-zinc-800 rotate-45" />
+                                                    {/* Caret arrow — top-right aligned to the (i) button */}
+                                                    <div className="absolute -top-[7px] right-2 w-3 h-3 bg-zinc-950 border-l border-t border-zinc-800 rotate-45" />
 
                                                     <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">How It&apos;s Calculated</p>
                                                     <p className="text-sm font-semibold leading-relaxed">Total Grocery Cost ÷ Total Meals Consumed</p>
