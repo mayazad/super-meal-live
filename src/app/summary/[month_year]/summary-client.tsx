@@ -358,21 +358,79 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                         onMouseEnter={() => setShowRateTooltip(true)}
                                         onMouseLeave={() => setShowRateTooltip(false)}
                                         onClick={() => setShowRateTooltip(v => !v)}
-                                        className="ml-0.5 h-4 w-4 rounded-full border border-muted-foreground/40 text-muted-foreground flex items-center justify-center text-[9px] font-bold hover:border-foreground hover:text-foreground transition-colors"
+                                        aria-label="How meal rate is calculated"
+                                        className="ml-0.5 h-4 w-4 rounded-full border border-muted-foreground/50 text-muted-foreground flex items-center justify-center text-[9px] font-bold hover:border-foreground hover:text-foreground transition-colors"
                                     >i</button>
+
                                     <AnimatePresence>
                                         {showRateTooltip && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 4 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0 }}
-                                                className="absolute right-0 top-6 z-50 w-56 rounded-xl border-2 border-foreground/10 bg-card text-card-foreground shadow-2xl p-3 text-left"
-                                                style={{ isolation: 'isolate' }}
-                                            >
-                                                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">How it&apos;s calculated</p>
-                                                <p className="text-xs font-medium">Total Grocery Cost ÷ Total Meals</p>
-                                                <p className="text-[11px] text-muted-foreground mt-1.5 border-t pt-1.5">{stats.totalGroceries.toFixed(2)} Tk ÷ {stats.totalMeals} meals = <strong className="text-foreground">{stats.mealRate.toFixed(2)} Tk</strong></p>
-                                            </motion.div>
+                                            <>
+                                                {/* Mobile: fixed full-screen backdrop + centered card */}
+                                                <motion.div
+                                                    key="backdrop"
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    className="sm:hidden fixed inset-0 z-[99] bg-black/50"
+                                                    onClick={() => setShowRateTooltip(false)}
+                                                />
+                                                <motion.div
+                                                    key="tooltip-mobile"
+                                                    initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                                    exit={{ opacity: 0, scale: 0.96 }}
+                                                    className="sm:hidden fixed left-4 right-4 bottom-6 z-[100] rounded-2xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-5"
+                                                >
+                                                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">How It&apos;s Calculated</p>
+                                                    <p className="text-sm font-semibold leading-relaxed">Total Grocery Cost ÷ Total Meals Consumed</p>
+                                                    <div className="mt-3 pt-3 border-t border-zinc-800 space-y-1">
+                                                        <div className="flex justify-between text-xs text-zinc-400 leading-relaxed">
+                                                            <span>Grocery Cost</span>
+                                                            <span className="font-mono">{stats.totalGroceries.toFixed(2)} Tk</span>
+                                                        </div>
+                                                        <div className="flex justify-between text-xs text-zinc-400 leading-relaxed">
+                                                            <span>Total Meals</span>
+                                                            <span className="font-mono">{stats.totalMeals}</span>
+                                                        </div>
+                                                        <div className="flex justify-between text-sm font-bold text-white border-t border-zinc-700 pt-2 mt-1">
+                                                            <span>Meal Rate</span>
+                                                            <span className="font-mono">{stats.mealRate.toFixed(2)} Tk</span>
+                                                        </div>
+                                                    </div>
+                                                    <button onClick={() => setShowRateTooltip(false)} className="mt-3 w-full text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Tap to close</button>
+                                                </motion.div>
+
+                                                {/* Desktop: absolute centered tooltip with caret */}
+                                                <motion.div
+                                                    key="tooltip-desktop"
+                                                    initial={{ opacity: 0, y: 6 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0 }}
+                                                    transition={{ duration: 0.15 }}
+                                                    className="hidden sm:block absolute top-7 left-1/2 -translate-x-1/2 z-[100] rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl p-4"
+                                                    style={{ minWidth: '280px', maxWidth: '350px' }}
+                                                >
+                                                    {/* Caret arrow pointing up */}
+                                                    <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3 h-3 bg-zinc-950 border-l border-t border-zinc-800 rotate-45" />
+
+                                                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">How It&apos;s Calculated</p>
+                                                    <p className="text-sm font-semibold leading-relaxed">Total Grocery Cost ÷ Total Meals Consumed</p>
+                                                    <div className="mt-3 pt-3 border-t border-zinc-800 space-y-1">
+                                                        <div className="flex justify-between text-xs text-zinc-400 leading-relaxed">
+                                                            <span>Grocery Cost</span>
+                                                            <span className="font-mono">{stats.totalGroceries.toFixed(2)} Tk</span>
+                                                        </div>
+                                                        <div className="flex justify-between text-xs text-zinc-400 leading-relaxed">
+                                                            <span>Total Meals</span>
+                                                            <span className="font-mono">{stats.totalMeals}</span>
+                                                        </div>
+                                                        <div className="flex justify-between text-sm font-bold text-white border-t border-zinc-700 pt-2 mt-1">
+                                                            <span>= Meal Rate</span>
+                                                            <span className="font-mono">{stats.mealRate.toFixed(2)} Tk</span>
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            </>
                                         )}
                                     </AnimatePresence>
                                 </div>
