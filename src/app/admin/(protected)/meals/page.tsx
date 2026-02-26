@@ -223,16 +223,16 @@ export default function MealsPage() {
 
             {/* ── Monthly History Ledger ───────────────────────────────────── */}
             <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <BookOpen className="h-5 w-5 text-muted-foreground" />
-                        <h2 className="text-xl font-bold tracking-tight">Monthly History</h2>
+                <div className="flex flex-wrap items-center justify-between gap-y-2 gap-x-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <BookOpen className="h-5 w-5 text-muted-foreground shrink-0" />
+                        <h2 className="text-lg sm:text-xl font-bold tracking-tight">Monthly History</h2>
                         <span className="text-xs bg-muted px-2 py-0.5 rounded-full font-medium text-muted-foreground uppercase tracking-wide">
                             {monthYear}
                         </span>
                         <span className="text-xs bg-foreground text-background px-2 py-0.5 rounded-full font-medium">Live</span>
                     </div>
-                    <p className="text-xs text-muted-foreground">{ledger.length} records</p>
+                    <p className="text-xs text-muted-foreground shrink-0">{ledger.length} records</p>
                 </div>
 
                 <div className="rounded-xl border bg-card shadow-sm overflow-hidden">

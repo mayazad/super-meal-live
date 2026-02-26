@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,6 +23,33 @@ type Props = {
 export default function MobileNav({ userEmail }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const pathname = usePathname()
+
+    // ── Scroll-lock: freeze body scroll while drawer is open ──────────────────
+    useEffect(() => {
+        if (isOpen) {
+            const scrollY = window.scrollY
+            document.body.style.position = 'fixed'
+            document.body.style.top = `-${scrollY}px`
+            document.body.style.left = '0'
+            document.body.style.right = '0'
+            document.body.style.overflow = 'hidden'
+        } else {
+            const scrollY = parseInt(document.body.style.top || '0') * -1
+            document.body.style.position = ''
+            document.body.style.top = ''
+            document.body.style.left = ''
+            document.body.style.right = ''
+            document.body.style.overflow = ''
+            window.scrollTo(0, scrollY)
+        }
+        return () => {
+            document.body.style.position = ''
+            document.body.style.top = ''
+            document.body.style.left = ''
+            document.body.style.right = ''
+            document.body.style.overflow = ''
+        }
+    }, [isOpen])
 
     const close = () => setIsOpen(false)
 
@@ -55,7 +82,7 @@ export default function MobileNav({ userEmail }: Props) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+                        className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm lg:hidden"
                         onClick={close}
                     />
                 )}
@@ -70,7 +97,8 @@ export default function MobileNav({ userEmail }: Props) {
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
                         transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-                        className="fixed top-0 left-0 bottom-0 z-50 w-72 bg-black text-white flex flex-col shadow-2xl lg:hidden"
+                        className="fixed top-0 left-0 bottom-0 z-[100] w-72 bg-black text-white flex flex-col shadow-2xl lg:hidden overscroll-contain"
+                        style={{ overscrollBehavior: 'contain' }}
                     >
                         {/* Drawer Header */}
                         <div className="flex items-center justify-between px-5 h-14 border-b border-white/10 shrink-0">
@@ -88,7 +116,7 @@ export default function MobileNav({ userEmail }: Props) {
                         </div>
 
                         {/* Nav Links */}
-                        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+                        <nav className="flex-1 overflow-y-auto overscroll-contain py-4 px-3 space-y-1">
                             {navItems.map((item) => {
                                 const Icon = item.icon
                                 const isActive = pathname === item.href
@@ -98,8 +126,8 @@ export default function MobileNav({ userEmail }: Props) {
                                         href={item.href}
                                         onClick={close}
                                         className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors min-h-[48px] ${isActive
-                                                ? 'bg-white text-black'
-                                                : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                            ? 'bg-white text-black'
+                                            : 'text-white/70 hover:bg-white/10 hover:text-white'
                                             }`}
                                     >
                                         <Icon className="h-5 w-5 shrink-0" />
@@ -112,6 +140,9 @@ export default function MobileNav({ userEmail }: Props) {
                         {/* Drawer Footer */}
                         <div className="shrink-0 border-t border-white/10 p-4 space-y-3">
                             <p className="text-xs text-white/40 truncate px-1">{userEmail}</p>
+                            <p className="text-[10px] text-white/20 px-1 tracking-wide">
+                                Crafted by <span className="font-mono font-semibold">MayazAD</span>
+                            </p>
                             <form action="/admin/logout" method="POST">
                                 <button
                                     type="submit"

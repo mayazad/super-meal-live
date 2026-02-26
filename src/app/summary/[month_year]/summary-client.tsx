@@ -357,6 +357,7 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                     <button
                                         onMouseEnter={() => setShowRateTooltip(true)}
                                         onMouseLeave={() => setShowRateTooltip(false)}
+                                        onClick={() => setShowRateTooltip(v => !v)}
                                         className="ml-0.5 h-4 w-4 rounded-full border border-muted-foreground/40 text-muted-foreground flex items-center justify-center text-[9px] font-bold hover:border-foreground hover:text-foreground transition-colors"
                                     >i</button>
                                     <AnimatePresence>
@@ -365,11 +366,12 @@ export default function SummaryClient({ monthName, monthYear, breakdown, textSum
                                                 initial={{ opacity: 0, y: 4 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0 }}
-                                                className="absolute right-0 top-6 z-10 w-52 rounded-lg border bg-card shadow-lg p-3 text-left"
+                                                className="absolute right-0 top-6 z-50 w-56 rounded-xl border-2 border-foreground/10 bg-card text-card-foreground shadow-2xl p-3 text-left"
+                                                style={{ isolation: 'isolate' }}
                                             >
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">How it&apos;s calculated</p>
-                                                <p className="text-xs">Total Grocery Cost ÷ Total Meals Consumed</p>
-                                                <p className="text-[11px] text-muted-foreground mt-1">{stats.totalGroceries.toFixed(2)} Tk ÷ {stats.totalMeals} meals = <strong>{stats.mealRate.toFixed(2)} Tk</strong></p>
+                                                <p className="text-xs font-medium">Total Grocery Cost ÷ Total Meals</p>
+                                                <p className="text-[11px] text-muted-foreground mt-1.5 border-t pt-1.5">{stats.totalGroceries.toFixed(2)} Tk ÷ {stats.totalMeals} meals = <strong className="text-foreground">{stats.mealRate.toFixed(2)} Tk</strong></p>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
